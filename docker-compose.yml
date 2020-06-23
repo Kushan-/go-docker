@@ -1,0 +1,8 @@
+version: "3"
+services:
+  go-docker-image:
+    build: ./
+    ports:
+      - '9120:9120'
+    volumes:
+      - ./:/app
