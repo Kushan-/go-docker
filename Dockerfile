@@ -8,11 +8,9 @@ WORKDIR /app
 
 COPY ./ /app
 
-RUN apk add git
-
-RUN git config --global url."https://golang:<fd8e9b80637b02c376ea1a317a09174cd5101d04>@github.com".insteadOf "https://github.com"
-
 RUN go mod download
+
+
 
 RUN go get github.com/githubnemo/CompileDaemon
 
