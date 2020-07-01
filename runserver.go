@@ -3,9 +3,10 @@ package main
 import (
 	"fmt"
 
-	// "github.com/Kushan-/go--docker/router"
 	"github.com/gofiber/fiber"
-	"github.com/Kushan-/go--docker/goodbye"
+	// "github.com/Kushan-/go-docker/goodbye"
+	"github.com/Kushan-/go-docker/pkg/router"
+	"github.com/gofiber/fiber/middleware"
 
 )
 
@@ -19,24 +20,30 @@ func main() {
 	})
 	// app.Use(cors.New())
 
-	// app.Use(func(c *fiber.Ctx) {
-	// 	// Set some security headers:
-	// 	c.Set("X-XSS-Protection", "1; mode=block")
-	// 	c.Set("X-Content-Type-Options", "nosniff")
-	// 	c.Set("X-Download-Options", "noopen")
-	// 	c.Set("Strict-Transport-Security", "max-age=5184000")
-	// 	c.Set("X-Frame-Options", "SAMEORIGIN")
-	// 	c.Set("X-DNS-Prefetch-Control", "off")
+	app.Use(func(c *fiber.Ctx) {
+		// Set some security headers:
+		c.Set("X-XSS-Protection", "1; mode=block")
+		c.Set("X-Content-Type-Options", "nosniff")
+		c.Set("X-Download-Options", "noopen")
+		c.Set("Strict-Transport-Security", "max-age=5184000")
+		c.Set("X-Frame-Options", "SAMEORIGIN")
+		c.Set("X-DNS-Prefetch-Control", "off")
 	  
-	// 	// Go to next middleware:
-	// 	c.Next()
+		// Go to next middleware:
+		c.Next()
 	  
-	// 	// End of the chain
-	// 	fmt.Println("Bye 👋!")
+		// End of the chain
+		fmt.Println("Bye 👋!")
+		fmt.Println(c.OriginalURL())
+		fmt.Println(c)
 		
-	// })
-	fmt.Println(goodbye.Goodbye())
-	//router.SetupRoutes(app)
+	})
+
+	
+	// Custom logging format
+	// app.Use(middleware.Logger("${method} - ${path}"))
+
+	router.SetupRoutes(app)
 	app.Static("/", "./static")
 
 	app.Listen(9120)
