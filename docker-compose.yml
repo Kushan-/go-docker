@@ -1,8 +1,42 @@
 version: "3"
 services:
-  go-docker-image:
+  go-docker:
+    container_name: go_docker
     build: ./
     ports:
       - '9120:9120'
     volumes:
       - ./:/app
+    restart: unless-stopped
+    depends_on: 
+      - cache # This service depends on redis. Start that first.
+    networks: # Networks to join (Services on the same network can communicate with each other using their name): 
+      - go-docker
+
+  cache:
+    container_name: go_redis
+    image: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data:cached
+    restart: "on-failure"
+  postgres:
+    container_name: go_postgres
+    image: postgres:10.5
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data:cached
+
+volumes:
+  redis-data:
+    driver: local
+  postgres-data:
+    driver: local
+
+
+networks:
+  go-docker:
+    driver: bridge
+  

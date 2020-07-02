@@ -6,7 +6,7 @@ import (
 	"github.com/gofiber/fiber"
 	// "github.com/Kushan-/go-docker/goodbye"
 	"github.com/Kushan-/go-docker/pkg/router"
-	"github.com/gofiber/fiber/middleware"
+	// "github.com/gofiber/fiber/middleware"
 
 )
 

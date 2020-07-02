@@ -5,7 +5,7 @@ import (
 	"github.com/gofiber/fiber"
 	jwtware "github.com/gofiber/jwt"
 
-	"github.com/do-docker/pkg/config"
+	"github.com/Kushan-/go-docker/pkg/config"
 )
 
 // Protected protect routes
