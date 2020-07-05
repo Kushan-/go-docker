@@ -4,6 +4,7 @@ import (
 	"github.com/Kushan-/go-docker/pkg/database"
 	"github.com/Kushan-/go-docker/pkg/model"
 	"strconv"
+	"fmt"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gofiber/fiber"
@@ -32,7 +33,7 @@ func validToken(t *jwt.Token, id string) bool {
 }
 
 func validUser(id string, p string) bool {
-	db := database.DB
+	db := database.DBConn
 	var user model.User
 	db.First(&user, id)
 	if user.Username == "" {
@@ -47,7 +48,7 @@ func validUser(id string, p string) bool {
 // GetUser get a user
 func GetUser(c *fiber.Ctx) {
 	id := c.Params("id")
-	db := database.DB
+	db := database.DBConn
 	var user model.User
 	db.Find(&user, id)
 	if user.Username == "" {
@@ -63,9 +64,12 @@ func CreateUser(c *fiber.Ctx) {
 		Username string `json:"username"`
 		Email    string `json:"email"`
 	}
-
-	db := database.DB
+	
+	db := database.DBConn
+	fmt.Println("->", db)
 	user := new(model.User)
+	fmt.Println("u->", user)
+	fmt.Println(c.BodyParser(user))
 	if err := c.BodyParser(user); err != nil {
 		c.Status(500).JSON(fiber.Map{"status": "error", "message": "Review your input", "data": err})
 		return
@@ -109,7 +113,7 @@ func UpdateUser(c *fiber.Ctx) {
 		return
 	}
 
-	db := database.DB
+	db := database.DBConn
 	var user model.User
 
 	db.First(&user, id)
@@ -142,7 +146,7 @@ func DeleteUser(c *fiber.Ctx) {
 		return
 	}
 
-	db := database.DB
+	db := database.DBConn
 	var user model.User
 
 	db.First(&user, id)

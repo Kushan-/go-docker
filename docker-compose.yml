@@ -10,8 +10,8 @@ services:
     restart: unless-stopped
     depends_on: 
       - cache # This service depends on redis. Start that first.
-    networks: # Networks to join (Services on the same network can communicate with each other using their name): 
-      - go-docker
+      - postgres
+    
 
   cache:
     container_name: go_redis
@@ -27,7 +27,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - postgres-data:/var/lib/postgresql/data:cached
+      - postgres-data:/var/run/postgresql/data:cached
 
 volumes:
   redis-data:
@@ -35,8 +35,4 @@ volumes:
   postgres-data:
     driver: local
 
-
-networks:
-  go-docker:
-    driver: bridge
   

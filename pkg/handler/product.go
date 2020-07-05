@@ -9,7 +9,7 @@ import (
 
 // GetAllProducts query all products
 func GetAllProducts(c *fiber.Ctx) {
-	db := database.DB
+	db := database.DBConn
 	var products []model.Product
 	db.Find(&products)
 	c.JSON(fiber.Map{"status": "success", "message": "All products", "data": products})
@@ -18,7 +18,7 @@ func GetAllProducts(c *fiber.Ctx) {
 // GetProduct query product
 func GetProduct(c *fiber.Ctx) {
 	id := c.Params("id")
-	db := database.DB
+	db := database.DBConn
 	var product model.Product
 	db.Find(&product, id)
 	if product.Title == "" {
@@ -30,7 +30,7 @@ func GetProduct(c *fiber.Ctx) {
 
 // CreateProduct new product
 func CreateProduct(c *fiber.Ctx) {
-	db := database.DB
+	db := database.DBConn
 	product := new(model.Product)
 	if err := c.BodyParser(product); err != nil {
 		c.Status(500).JSON(fiber.Map{"status": "error", "message": "Couldn't create product", "data": err})
@@ -43,7 +43,7 @@ func CreateProduct(c *fiber.Ctx) {
 // DeleteProduct delete product
 func DeleteProduct(c *fiber.Ctx) {
 	id := c.Params("id")
-	db := database.DB
+	db := database.DBConn
 
 	var product model.Product
 	db.First(&product, id)

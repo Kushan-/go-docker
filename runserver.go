@@ -6,7 +6,10 @@ import (
 	"github.com/gofiber/fiber"
 	// "github.com/Kushan-/go-docker/goodbye"
 	"github.com/Kushan-/go-docker/pkg/router"
+	"github.com/Kushan-/go-docker/pkg/database"
 	// "github.com/gofiber/fiber/middleware"
+
+	_ "github.com/jinzhu/gorm/dialects/postgres"
 
 )
 
@@ -19,6 +22,8 @@ func main() {
         ServerHeader:  "Fiber",
 	})
 	// app.Use(cors.New())
+
+	database.ConnectDB()
 
 	app.Use(func(c *fiber.Ctx) {
 		// Set some security headers:
@@ -47,6 +52,7 @@ func main() {
 	app.Static("/", "./static")
 
 	app.Listen(9120)
+	defer database.DBConn.Close()
 }
 
 //https://github.com/gofiber/recipes/tree/master/auth-jwt
